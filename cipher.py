@@ -20,21 +20,13 @@ def generatePad(msg_length):
     for index in range(msg_length):
         pad_chars = secrets.choice(string.ascii_uppercase)
         pad += pad_chars
+    return pad
 
-    with open("pad.txt", "w") as file:       # save the result in a file called pad.txt
-        file.write(pad)
+    # with open("pad.txt", "w") as file:       # save the result in a file called pad.txt
+    #     file.write(pad)
 
 # Function to encrypt the message. It takes in the message and the pad and returns the encrypted message.
-def encipher(file1, file2):
-    try:
-        with open(file1) as f:
-            msg = f.read()
-        with open(file2) as f:
-            pad = f.read()
-    except FileNotFoundError:
-        print("Please input a valid file name.")
-
-
+def encipher(msg, pad):
     pad_ascii = []      # convert pad letters into ascii numbers
     for letter in pad:    
         letter_ascii = ord(letter)
@@ -70,29 +62,20 @@ def encipher(file1, file2):
         encrypted_text += letter
     with open("encrypted-message.txt", "w") as file:       # save the result in a file called encrypted-message.txt
         file.write(encrypted_text)
-    # return encrypted_text
+    return encrypted_text
 
 # Function to decrypt the encrypted message; it takes in the pad and the encrypted message, and returns the decrypted message    
-def decipher(file1, file2):
-    try:
-        with open(file1) as f1:
-            encrypted_msg = f1.read()
-        with open(file2) as f2:
-            pad = f2.read()
-    except FileNotFoundError:
-        print("Please input a valid file name")
-
+def decipher(msg, pad):
     pad_ascii = []      # convert pad letters into ascii numbers
     for letter in pad:  
         letter_ascii = ord(letter)
         pad_ascii.append(letter_ascii)
-    
 
     # unshift the characters and return the unshifted message in ascii
     index = 0
     decrypted_shifted_msg = []
     not_ascii = []
-    for char in encrypted_msg:
+    for char in msg:
         shift = pad_ascii[index] - 65     # Define shift as the number at index i of the pad
         if char.isalpha():
             char_ascii = ord(char) 
